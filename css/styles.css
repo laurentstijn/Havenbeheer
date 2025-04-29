@@ -306,3 +306,13 @@ button.danger:hover {
     width: 100%;
     margin: 5px 0;
     text-align:
+
+@media (max-width: 1200px) {
+.app-container {
+    flex-direction: column;
+}
+    
+.management-panel {
+    min-width: 100%;
+}
+}
