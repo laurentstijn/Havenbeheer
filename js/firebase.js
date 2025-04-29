@@ -1,5 +1,10 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js';
-import { getDatabase, ref, set as firebaseSet, onValue } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js';
+import { 
+    getDatabase, 
+    ref, 
+    set as firebaseSet, 
+    onValue as firebaseOnValue 
+} from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBrvdXyuMpgkC4lFKjQDeHNihzFRbzMANU",
@@ -14,4 +19,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export { database, ref, firebaseSet as set, onValue };
+export { 
+    database, 
+    ref, 
+    firebaseSet as set, 
+    firebaseOnValue as onValue 
+};
