@@ -36,9 +36,102 @@ export function init() {
 }
 
 function setupFirebaseListeners() {
-    // Implementeer Firebase listeners zoals eerder
+    // Piers listener
+    onValue(ref(database, 'piers'), (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            state.piers = data;
+            if (state.piers.length > 0) {
+                state.nextPierId = Math.max(...state.piers.map(p => p.id)) + 1;
+            }
+        }
+    });
+
+    // Slots listener
+    onValue(ref(database, 'slots'), (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            state.slots = data;
+            if (state.slots.length > 0) {
+                state.nextSlotId = Math.max(...state.slots.map(s => s.id)) + 1;
+            }
+        }
+    });
+
+    // Boats listener
+    onValue(ref(database, 'boats'), (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            state.boats = data;
+            if (state.boats.length > 0) {
+                state.nextBoatId = Math.max(...state.boats.map(b => b.id)) + 1;
+            }
+        }
+    });
 }
 
 export function getRandomOwner() {
     return sampleOwners[Math.floor(Math.random() * sampleOwners.length)];
+}
+
+export function addPier(pier) {
+    state.piers.push(pier);
+    return set(ref(database, `piers/${pier.id}`), pier);
+}
+
+export function removePier(pierId) {
+    state.piers = state.piers.filter(p => p.id !== pierId);
+    return set(ref(database, 'piers'), state.piers);
+}
+
+export function addSlot(slot) {
+    state.slots.push(slot);
+    return set(ref(database, `slots/${slot.id}`), slot);
+}
+
+export function removeSlot(slotId) {
+    state.slots = state.slots.filter(s => s.id !== slotId);
+    return set(ref(database, 'slots'), state.slots);
+}
+
+export function addBoat(boat) {
+    state.boats.push(boat);
+    return set(ref(database, `boats/${boat.id}`), boat);
+}
+
+export function removeBoat(boatId) {
+    state.boats = state.boats.filter(b => b.id !== boatId);
+    return set(ref(database, 'boats'), state.boats);
+}
+
+export function updateBoat(boat) {
+    const index = state.boats.findIndex(b => b.id === boat.id);
+    if (index !== -1) {
+        state.boats[index] = boat;
+    }
+    return set(ref(database, `boats/${boat.id}`), boat);
+}
+
+export function checkCollision(boat) {
+    if (boat.slotId) {
+        const slot = state.slots.find(s => s.id === boat.slotId);
+        if (slot && (
+            boat.x < slot.x || 
+            boat.x + boat.width > slot.x + slot.width || 
+            boat.y < slot.y || 
+            boat.y + boat.height > slot.y + slot.height
+        )) {
+            return true;
+        }
+    }
+
+    return state.boats.some(otherBoat => {
+        if (otherBoat.id === boat.id) return false;
+        return (
+            boat.x < otherBoat.x + otherBoat.width &&
+            boat.x + boat.width > otherBoat.x &&
+            boat.y < otherBoat.y + otherBoat.height &&
+            boat.y + boat.height > otherBoat.y
+        );
+    });
 }
