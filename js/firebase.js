@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js';
-import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js';
+import { getDatabase, ref, set as firebaseSet, onValue } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBrvdXyuMpgkC4lFKjQDeHNihzFRbzMANU",
@@ -11,12 +11,7 @@ const firebaseConfig = {
     appId: "1:180262088073:web:6470e50e3ad8a587ef8558"
 };
 
-let database;
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
-export function init() {
-    const app = initializeApp(firebaseConfig);
-    database = getDatabase(app);
-    console.log('Firebase geïnitialiseerd');
-}
-
-export { database, ref, set, onValue };
+export { database, ref, firebaseSet as set, onValue };
