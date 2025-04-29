@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jachthaven Beheer</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Jachthaven Beheersysteem</h1>
+    
+    <div class="app-container">
+        <!-- Haven Tekening Panel -->
+        <div class="drawing-panel">
+            <h2 class="section-title">Haven Tekening</h2>
+            <div class="drawing-controls">
+                <button id="selectMode" class="primary">Selectie Modus</button>
+                <button id="drawPierMode" class="secondary">Steiger Modus</button>
+                <button id="drawSlotMode" class="secondary">Ligplaats Modus</button>
+                <button id="deleteMode" class="danger">Verwijder Modus</button>
+            </div>
+            <div class="harbor-container" id="harbor"></div>
+        </div>
+        
+        <!-- Management Panel -->
+        <div class="management-panel">
+            <!-- Steiger Beheer -->
+            <div class="pier-management">
+                <h2 class="section-title">Steiger Beheer</h2>
+                <div class="control-group">
+                    <label for="pierName">Steiger Naam:</label>
+                    <input type="text" id="pierName" placeholder="Bijv. Steiger A">
+                </div>
+                <div class="buttons">
+                    <button id="savePier" class="success">Steiger Opslaan</button>
+                    <button id="removePier" class="danger">Verwijderen</button>
+                </div>
+            </div>
+            
+            <!-- Ligplaats Beheer -->
+            <div class="slot-management">
+                <h2 class="section-title">Ligplaats Beheer</h2>
+                <div class="control-group">
+                    <label for="slotName">Ligplaats Naam:</label>
+                    <input type="text" id="slotName" placeholder="Bijv. Ligplaats 1">
+                </div>
+                <div class="buttons">
+                    <button id="saveSlot" class="success">Ligplaats Opslaan</button>
+                    <button id="removeSlot" class="danger">Verwijderen</button>
+                </div>
+            </div>
+            
+            <!-- Boot Beheer -->
+            <div class="boat-management">
+                <h2 class="section-title">Boot Beheer</h2>
+                <div class="control-group">
+                    <label for="boatType">Type Boot:</label>
+                    <select id="boatType">
+                        <option value="sailboat">Zeilboot</option>
+                        <option value="motorboat">Motorboot</option>
+                        <option value="yacht">Jacht</option>
+                        <option value="small">Kleine boot</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="boatSize">Grootte (m):</label>
+                    <input type="number" id="boatSize" min="5" max="30" value="10">
+                </div>
+                <div class="control-group">
+                    <label for="boatName">Naam:</label>
+                    <input type="text" id="boatName" placeholder="Bijv. De Zeevaarder">
+                </div>
+                <div class="buttons">
+                    <button id="addBoat" class="primary">Boot Toevoegen</button>
+                    <button id="removeBoat" class="danger">Verwijderen</button>
+                </div>
+            </div>
+            
+            <!-- Info Panel -->
+            <div class="info-panel">
+                <h2 class="section-title">Details</h2>
+                <div id="noSelection" class="no-selection">
+                    Selecteer een steiger, ligplaats of boot voor details
+                </div>
+                <!-- Info displays blijven hetzelfde -->
+            </div>
+        </div>
+    </div>
+
+    <div id="syncStatus" class="sync-status">Verbonden met Firebase</div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
