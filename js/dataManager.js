@@ -1,5 +1,5 @@
-import { database, ref, set } from './firebase.js';
-import { state } from './harborManager.js';
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { db } from './firebase.js';
 
 export function init() {
     console.log('DataManager geïnitialiseerd');
@@ -18,4 +18,11 @@ export function saveSlotsToFirebase() {
 export function saveBoatsToFirebase() {
     return set(ref(database, 'boats'), state.boats)
         .catch(error => console.error("Fout bij opslaan boten:", error));
+}
+
+async function loadPiers() {
+    const querySnapshot = await getDocs(collection(db, "piers"));
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+    });
 }
