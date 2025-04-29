@@ -1,28 +1,30 @@
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+// js/dataManager.js
+import { collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { db } from './firebase.js';
 
-export function init() {
-    console.log('DataManager geïnitialiseerd');
-}
+export async function loadPiers() {
+    const pierRef = collection(db, "piers");
+    const querySnapshot = await getDocs(pierRef);
+    const piers = [];
 
-export function savePiersToFirebase() {
-    return set(ref(database, 'piers'), state.piers)
-        .catch(error => console.error("Fout bij opslaan pieren:", error));
-}
-
-export function saveSlotsToFirebase() {
-    return set(ref(database, 'slots'), state.slots)
-        .catch(error => console.error("Fout bij opslaan ligplaatsen:", error));
-}
-
-export function saveBoatsToFirebase() {
-    return set(ref(database, 'boats'), state.boats)
-        .catch(error => console.error("Fout bij opslaan boten:", error));
-}
-
-async function loadPiers() {
-    const querySnapshot = await getDocs(collection(db, "piers"));
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+    querySnapshot.forEach((docSnap) => {
+        const pier = docSnap.data();
+        pier.id = docSnap.id;
+        piers.push(pier);
     });
+
+    return piers;
+}
+
+export async function savePier(pierData) {
+    const pierRef = collection(db, "piers");
+    const docRef = await addDoc(pierRef, pierData);
+    console.log("Nieuwe steiger opgeslagen met ID:", docRef.id);
+    return docRef.id;
+}
+
+export async function deletePier(pierId) {
+    const pierDocRef = doc(db, "piers", pierId);
+    await deleteDoc(pierDocRef);
+    console.log("Steiger verwijderd:", pierId);
 }
